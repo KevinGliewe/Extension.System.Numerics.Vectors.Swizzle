@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Numerics.Vectors.Swizzle", "src\System.Numerics.Vectors.Swizzle\System.Numerics.Vectors.Swizzle.csproj", "{1B16944E-1A93-4A8B-9C86-C9F36CA29564}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extension.System.Numerics.Vectors.Swizzle", "src\Extension.System.Numerics.Vectors.Swizzle\Extension.System.Numerics.Vectors.Swizzle.csproj", "{1B16944E-1A93-4A8B-9C86-C9F36CA29564}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
