@@ -35,7 +35,9 @@ paket add Extension.System.Numerics.Vectors.Swizzle
 ## Example
 
 ```csharp
+using System;
 using System.Numerics;
+using System.Diagnostics;
 
 class Program
 {
@@ -45,23 +47,23 @@ class Program
 
         // Get Vector2 from float by requesting the first component twice
         Vector2 v2 = pi.XX();
-        Assert(v2.X == pi);
-        Assert(v2.Y == pi);
+        Debug.Assert(v2.X == pi);
+        Debug.Assert(v2.Y == pi);
 
         v2.X = 1.0f;
         v2.Y = 3.0f;
 
         // Get Vector4 from Vector2 by requesting components and injecting new ones
-        Vector3 v4 = v2.X_Y_(2.0f, 4.0f);
-        Assert(v4.X == 1.0f);
-        Assert(v4.Y == 2.0f);
-        Assert(v4.Z == 3.0f);
-        Assert(v4.W == 4.0f);
+        Vector4 v4 = v2.X_Y_(2.0f, 4.0f);
+        Debug.Assert(v4.X == 1.0f);
+        Debug.Assert(v4.Y == 2.0f);
+        Debug.Assert(v4.Z == 3.0f);
+        Debug.Assert(v4.W == 4.0f);
 
         // Copy the W and X component over to a Vector2
         v4.WX(ref v2);
-        Assert(v2.X == 4.0f);
-        Assert(v2.Y == 1.0f);
+        Debug.Assert(v2.X == 4.0f);
+        Debug.Assert(v2.Y == 1.0f);
     }
 }
 ```
