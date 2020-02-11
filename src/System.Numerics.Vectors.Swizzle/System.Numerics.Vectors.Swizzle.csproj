@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Kevin Gliwe</Authors>
+    <PackageTags>Vector, Swizzle</PackageTags>
+    <PackageProjectUrl>https://github.com/KevinGliewe/System.Numerics.Vectors.Swizzle</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/KevinGliewe/System.Numerics.Vectors.Swizzle</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/KevinGliewe/System.Numerics.Vectors.Swizzle/LICENSE</PackageLicenseUrl>
+    <Copyright>Kevin Gliewe</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="T5.TextTransform.Tool" Version="1.1.0" />
+  </ItemGroup>
+
+  <Target Name="GenerateTemplates" BeforeTargets="BeforeBuild">
+    <Exec Command="dotnet tt VectorSwizzle.gen.tt" />
+  </Target>
+
+</Project>

@@ -1,0 +1,19 @@
+<#@ assembly name="System.dll" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ assembly name="System.Collections.dll" #>
+<#@ assembly name="System.Linq.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+
+<#+
+    public IEnumerable<IEnumerable<T>> 
+        GetPermutationsWithRept<T>(IEnumerable<T> list, int length)
+    {
+        if (length == 1) return list.Select(t => new T[] { t });
+        return GetPermutationsWithRept(list, length - 1)
+            .SelectMany(t => list, 
+                (t1, t2) => t1.Concat(new T[] { t2 }));
+    }
+#>

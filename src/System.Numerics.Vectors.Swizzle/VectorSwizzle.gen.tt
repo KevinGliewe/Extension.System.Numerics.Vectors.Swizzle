@@ -1,0 +1,111 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".cs" encoding="utf-8"#>
+<#@ assembly name="System.dll" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ assembly name="System.Collections.dll" #>
+<#@ assembly name="System.Linq.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ include file="Lib.t4" #>
+using System.Numerics;
+
+namespace System.Numerics
+{
+    public static class VectorSwizzle
+    {
+<#
+    var componentNameSets = new[] { '_', 'X', 'Y', 'Z', 'W' };
+
+    var Datatypes = new[] {"float", "Vector2", "Vector3", "Vector4"};
+
+    for(int SrcLen = 1 ; SrcLen <= 4; SrcLen++) {
+        var inT = Datatypes[SrcLen-1];
+#>#region <#=inT#>
+<#
+        for(int DestLen = 2; DestLen <= 4; DestLen++) {
+            var outT = Datatypes[DestLen-1];
+#>#region <#=inT#>-><#=outT#>
+<#
+            foreach(var perm in GetPermutationsWithRept(componentNameSets.Take(SrcLen+1), DestLen)) {
+                var swizzle = new String(perm.ToArray());
+                var args = new List<String>();
+                int nInjects = 0;
+                foreach(var name in swizzle) {
+                    if(name == '_') { // inject args
+                        args.Add("inj" + (nInjects++));
+                    } else {
+                        if(SrcLen > 1)
+                            args.Add("self." + name); // self -> Vector
+                        else
+                            args.Add("self"); // self -> float
+                    }
+                }
+                if(nInjects == DestLen)
+                    continue;
+#>
+        /// <summary>
+        /// Extracts a <#=outT#> from a <#=inT#> using swizzle.
+        /// </summary>
+        /// <param name="self">The source component</param>
+        <#
+                for(int inj = 0; inj < nInjects ; inj++) {
+#>
+        /// <param name="inj<#=inj#>">Injected component. The '_' will be replaces with this value.</param>
+<#
+                }
+        #>
+        public static <#=outT#> <#=swizzle#>(this <#=inT#> self
+        <#
+                for(int inj = 0; inj < nInjects ; inj++) {
+                #>
+                , float inj<#=inj#>
+                <#
+                }
+        #>
+        ) {
+            return new <#=outT#>(
+                <#=String.Join(" ,", args)#>
+            );
+        }
+
+        /// <summary>
+        /// Extracts a <#=outT#> from a <#=inT#> using swizzle.
+        /// </summary>
+        /// <param name="self">The source component</param>
+        /// <param name="other">The target component</param>
+        <#
+                for(int inj = 0; inj < nInjects ; inj++) {
+                #>
+        /// <param name="inj<#=inj#>">Injected component. The '_' will be replaces with this value.</param>
+                <#
+                }
+        #>
+        public static void <#=swizzle#>(this <#=inT#> self, ref <#=outT#> other
+        <#
+                for(int inj = 0; inj < nInjects ; inj++) {
+                #>
+                , float inj<#=inj#>
+                <#
+                }
+        #>
+        ) {
+
+            <#for(int oi = 0 ; oi < DestLen; oi++) {#>
+                other.<#=componentNameSets[oi+1]#> = <#=args[oi]#>;
+            <#}#>
+        }
+
+<# 
+            }
+#>#endregion
+<#
+        }
+#>#endregion
+<#
+    }
+
+#>
+    }
+}
